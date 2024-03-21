@@ -1,8 +1,6 @@
-import numpy as np
-import pandas as pd
-
-
-def haversine_distance(lon: float, lat: float, df_lon: pd.Series, df_lat: pd.Series) -> pd.Series:
+def haversine_distance(
+        lon: float, lat: float, df_lon: pd.Series, df_lat: pd.Series, nsmallest: int = None, nlargest: int = None
+) -> pd.Series:
     """
     使用Haversine公式计算两个地点之间的距离。
 
@@ -15,6 +13,11 @@ def haversine_distance(lon: float, lat: float, df_lon: pd.Series, df_lat: pd.Ser
         参考点的经度。
     lat : float
         参考点的纬度。
+    nsmallest : int
+        距离最小的点数量
+    nlargest : int
+        距离最大的点数量
+
 
     返回：
     pd.Series
@@ -40,5 +43,12 @@ def haversine_distance(lon: float, lat: float, df_lon: pd.Series, df_lat: pd.Ser
             np.cos(lat_rad) * np.cos(np.radians(lat)) * np.sin(d_lon / 2) ** 2
         )
     )
+    if nsmallest is None and nlargest is None:
+        return distance
+    elif nsmallest is not None and nlargest is None:
+        return distance.nsmallest(nsmallest)
+    elif nsmallest is None and nlargest is not None:
+        return distance.nlargest(nlargest)
+    else:
+        raise ValueError("nsmallest and nlargest cannot be used together")
 
-    return distance
