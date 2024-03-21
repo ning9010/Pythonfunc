@@ -1,0 +1,2 @@
+# Pythonfunc
+Python usefull function
