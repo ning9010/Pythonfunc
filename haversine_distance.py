@@ -1,3 +1,7 @@
+import pandas as pd
+import numpy as np
+
+
 def haversine_distance(
         lon: float, lat: float, df_lon: pd.Series, df_lat: pd.Series, nsmallest: int = None, nlargest: int = None
 ) -> pd.Series:
